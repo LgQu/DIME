@@ -1,0 +1,13 @@
+Cython                    0.29.14                   <pip>
+matplotlib                2.2.4            py27hb69df0a_0  
+mkl                       2019.4                    <pip>   
+nltk                      3.2.4                    py27_0
+numpy                     1.16.5           py27h7e9f1db_0       
+pillow                    4.2.1                    py27_0   
+protobuf                  3.11.2                    <pip>
+python                    2.7.13                        0  
+pytorch                   1.0.1           py2.7_cuda10.0.130_cudnn7.4.2_2  
+scipy                     1.2.2                     <pip>
+setuptools                36.4.0                   py27_1   
+tensorboard-logger        0.1.0                     <pip>
+torchvision               0.1.8                    py27_0  
