@@ -115,15 +115,15 @@ class BERTLayerNorm(nn.Module):
         """Construct a layernorm module in the TF style (epsilon inside the square root).
         """
         super(BERTLayerNorm, self).__init__()
-        self.gamma = nn.Parameter(torch.ones(config.hidden_size))
-        self.beta = nn.Parameter(torch.zeros(config.hidden_size)) 
+        self.weight = nn.Parameter(torch.ones(config.hidden_size))
+        self.bias = nn.Parameter(torch.zeros(config.hidden_size)) 
         self.variance_epsilon = variance_epsilon
 
     def forward(self, x):
         u = x.mean(-1, keepdim=True)
         s = (x - u).pow(2).mean(-1, keepdim=True)
         x = (x - u) / torch.sqrt(s + self.variance_epsilon)
-        return self.gamma * x + self.beta
+        return self.weight * x + self.bias
 
 
 class BERTEmbeddings(nn.Module):
@@ -391,8 +391,8 @@ class BertForSequenceClassification(nn.Module):
                 # cf https://github.com/pytorch/pytorch/pull/5617
                 module.weight.data.normal_(config.initializer_range)
             elif isinstance(module, BERTLayerNorm):
-                module.beta.data.normal_(config.initializer_range)
-                module.gamma.data.normal_(config.initializer_range)
+                module.bias.data.normal_(config.initializer_range)
+                module.weight.data.normal_(config.initializer_range)
             if isinstance(module, nn.Linear):
                 module.bias.data.zero_()
         self.apply(init_weights)
@@ -441,8 +441,8 @@ class BertForQuestionAnswering(nn.Module):
                 # cf https://github.com/pytorch/pytorch/pull/5617
                 module.weight.data.normal_(config.initializer_range)
             elif isinstance(module, BERTLayerNorm):
-                module.beta.data.normal_(config.initializer_range)
-                module.gamma.data.normal_(config.initializer_range)
+                module.bias.data.normal_(config.initializer_range)
+                module.weight.data.normal_(config.initializer_range)
             if isinstance(module, nn.Linear):
                 module.bias.data.zero_()
         self.apply(init_weights)
